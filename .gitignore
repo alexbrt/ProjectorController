@@ -9,6 +9,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Private files
+smtp_credentials.txt
+
 # Distribution / packaging
 .Python
 build/
