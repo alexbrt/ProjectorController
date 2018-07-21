@@ -26,6 +26,9 @@
     <Compile Include="commands\command.py" />
     <Compile Include="commands\is_okay_interrogation_loop_email.py" />
     <Compile Include="commands\temperature_request.py" />
+    <Compile Include="commands\update_loop_email.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="networking\mysocket.py" />
     <Compile Include="networking\smtp_service.py" />
     <Compile Include="projectors\projector.py" />
@@ -41,6 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.6" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="smtp_credentials.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
 </Project>

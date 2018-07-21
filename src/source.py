@@ -7,6 +7,7 @@ from projector_roadie4k45 import ProjectorRoadie4k45
 from action_manager import ActionManager
 from temperature_request import TemperatureRequest
 from is_okay_interrogation_loop_email import IsOkayInterrogationLoopEmail
+from update_loop_email import UpdateLoopEmail
 from command import Command
 
 def main():
@@ -85,7 +86,11 @@ def main():
 					if command_code == 'temp':
 						action = TemperatureRequest(projectors[projector_name])
 					elif command_code == 'is_okay_loop_email':
-						action = IsOkayInterrogationLoopEmail(projectors[projector_name], smtp_recipients_1, smtp_service_1)
+						warning_interval = int(args['predefined'][1])
+						action = IsOkayInterrogationLoopEmail(projectors[projector_name], warning_interval, smtp_recipients_1, smtp_service_1)
+					elif command_code == 'update_loop_email':
+						update_interval = int(args['predefined'][1])
+						action = UpdateLoopEmail(projectors[projector_name], update_interval, smtp_recipients_1, smtp_service_1)
 			elif args['command']:
 				action = Command(projectors[projector_name], args['command'], args['wait'], args['wait'])
 
@@ -107,4 +112,3 @@ def main():
 
 if __name__ == '__main__':
 	main()
-
