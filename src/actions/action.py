@@ -1,4 +1,4 @@
-from projector import Projector
+from projectors.projector import Projector
 
 class Action:
 	def __init__(self, projector: Projector, wait_for_response: bool, needs_printing: bool = False):

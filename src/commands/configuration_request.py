@@ -1,15 +1,15 @@
 from actions.one_time_action import OneTimeAction
 from projectors.projector import Projector
 
-class TemperatureRequest(OneTimeAction):
+class ConfigurationRequest(OneTimeAction):
 	def __init__(self, projector: Projector):
 		super().__init__(projector, wait_for_response = True, needs_printing = True)
-		self.code = 'temp'
+		self.code = 'conf'
 
 	def exec(self):
-		self.response = self.projector.request_temperatures()
+		self.response = self.projector.get_configuration()
 		return self.response
 
 	def print_response(self):
-		for sensor_name in self.response:
-			print('\t\t/ {}: {} °C'.format(sensor_name, self.response[sensor_name]))
+		for conf in self.response.values:
+			print('\t\t/ {}: {}'.format(conf, self.response.values[conf]))

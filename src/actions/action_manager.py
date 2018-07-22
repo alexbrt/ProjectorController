@@ -1,6 +1,6 @@
 import threading
 import time
-from action import Action
+from actions.action import Action
 
 class ActionManager:
 	def __init__(self):
@@ -8,6 +8,7 @@ class ActionManager:
 		self.responses = {}
 		self.background_thread = threading.Thread(target = self.execution_loop)
 		self.background_thread.daemon = True
+		self.__exit_request = False
 
 	def add_action(self, action: Action):
 		self.actions.append(action)
@@ -20,6 +21,9 @@ class ActionManager:
 
 	def execution_loop(self):
 		while True:
+			if self.__exit_request:
+				return
+
 			for action in self.actions:
 				response = action.exec()
 				if action.wait_for_response:
@@ -31,3 +35,9 @@ class ActionManager:
 		
 	def start(self):
 		self.background_thread.start()
+
+	def exit(self):
+		self.__exit_request = True
+
+	def __del__(self):
+		self.exit()

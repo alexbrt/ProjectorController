@@ -1,5 +1,5 @@
-from action import Action
-from projector import Projector
+from actions.action import Action
+from projectors.projector import Projector
 
 class RecurrentAction(Action):
 	def __init__(self, projector: Projector, wait_for_response: bool, needs_printing: bool = False):

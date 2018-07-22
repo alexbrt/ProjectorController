@@ -1,5 +1,7 @@
-from one_time_action import OneTimeAction
-from projector import Projector
+import re
+
+from actions.one_time_action import OneTimeAction
+from projectors.projector import Projector
 
 class Command(OneTimeAction):
 	def __init__(self, projector: Projector, cmd: str, wait_for_response: bool, needs_printing: bool):
@@ -14,4 +16,12 @@ class Command(OneTimeAction):
 		return self.response
 
 	def print_response(self):
-		print('\t\t/ {}'.format(self.response))
+		temp = ''
+		start_index = 0
+		for m in re.finditer(r'(?<!\\)\)', self.response):
+			if start_index != 0:
+				temp += '\n'
+			temp += '\t\t/ ' + self.response[start_index:m.end()]
+			start_index = m.end()
+
+		print(temp)

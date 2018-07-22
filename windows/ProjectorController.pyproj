@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{72a85949-7a24-4131-bfcc-8a8f367e1e47}</ProjectGuid>
     <ProjectHome>..\src\</ProjectHome>
-    <StartupFile>source.py</StartupFile>
+    <StartupFile>main.py</StartupFile>
     <SearchPath>actions;commands;networking;projectors</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -24,7 +24,8 @@
     <Compile Include="actions\one_time_action.py" />
     <Compile Include="actions\recurrent_action.py" />
     <Compile Include="commands\command.py" />
-    <Compile Include="commands\is_okay_interrogation_loop_email.py" />
+    <Compile Include="commands\configuration_request.py" />
+    <Compile Include="commands\warning_loop_email.py" />
     <Compile Include="commands\temperature_request.py" />
     <Compile Include="commands\update_loop_email.py">
       <SubType>Code</SubType>
@@ -32,9 +33,12 @@
     <Compile Include="networking\mysocket.py" />
     <Compile Include="networking\smtp_service.py" />
     <Compile Include="projectors\projector.py" />
+    <Compile Include="projectors\projector_configuration.py" />
+    <Compile Include="projectors\projector_jseries.py" />
+    <Compile Include="projectors\projector_mseries.py" />
     <Compile Include="projectors\projector_roadie4k45.py" />
     <Compile Include="projectors\projector_status.py" />
-    <Compile Include="source.py" />
+    <Compile Include="main.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="actions" />

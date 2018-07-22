@@ -1,15 +1,15 @@
 import time
 
-from smtp_service import SMTP_Service
-from projector import Projector
-from recurrent_action import RecurrentAction
+from networking.smtp_service import SMTP_Service
+from projectors.projector import Projector
+from actions.recurrent_action import RecurrentAction
 
-class IsOkayInterrogationLoopEmail(RecurrentAction):
+class WarningLoopEmail(RecurrentAction):
 	def __init__(self, projector : Projector, warning_interval, recipients, smtp_service : SMTP_Service = None):
 		super().__init__(projector, wait_for_response = True, needs_printing = False)
 		if smtp_service:
 			self.smtp_service = smtp_service
-		self.code = 'is_okay_loop_email'
+		self.code = 'warning_loop_email'
 		self.projector = projector
 		self.warning_index = 0
 		self.warning_interval = warning_interval
@@ -26,13 +26,13 @@ class IsOkayInterrogationLoopEmail(RecurrentAction):
 
 			self.elapsed_time_since_last_warning = time.time() - self.last_warning_start_time
 			if self.elapsed_time_since_last_warning >= self.warning_interval or self.warning_index == 0:
-				subject = 'VIDEOPROJECTOR \'{}\' (IP: {}) WARNING #{}'.format(self.projector.name, self.projector.IP[-3:], self.warning_index)
-				message = 'Projector {} warning:\n\n'.format(self.projector.IP[-3:])
+				subject = 'PJ{} \'{}\' WARNING #{}'.format(self.projector.last_IP_digits, self.projector.name, self.warning_index)
+				message = 'PJ{} {} warning at {} on {}:\n\n'.format(self.projector.last_IP_digits, self.projector.family, time.strftime('%X'), time.strftime('%x'))
 				# Gather info
-				for sensor_ID in self.projector.status.temperatures:
-					temperature_warning = 'Videoprojector \'{}\' {}: {} (max acceptable: {}, diff: {})'
-					if self.projector.status.temperatures[sensor_ID] >= self.projector.temperature_thresholds[sensor_ID]:
-						message += temperature_warning.format(self.projector.name, self.projector.temperature_dictionary[sensor_ID], self.projector.status.temperatures[sensor_ID], self.projector.temperature_thresholds[sensor_ID], self.projector.status.temperatures[sensor_ID] - self.projector.temperature_thresholds[sensor_ID])
+				for sensor_name in self.projector.status.temperatures:
+					temperature_warning = '{}: {} (max acceptable: {}, diff: {})'
+					if self.projector.status.temperatures[sensor_name] >= self.projector.temperature_thresholds[sensor_ID]:
+						message += temperature_warning.format(sensor_name, self.projector.status.temperatures[sensor_name], self.projector.temperature_thresholds[sensor_name], self.projector.status.temperatures[sensor_name] - self.projector.temperature_thresholds[sensor_name])
 						message += '\n'
 				self.smtp_service.sendmail(self.sender, self.recipients, subject, message)
 				self.warning_index += 1

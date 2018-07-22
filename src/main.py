@@ -1,14 +1,18 @@
 import argparse
 import shlex
 
-from smtp_service import SMTP_Service
-from projector import Projector
-from projector_roadie4k45 import ProjectorRoadie4k45
-from action_manager import ActionManager
-from temperature_request import TemperatureRequest
-from is_okay_interrogation_loop_email import IsOkayInterrogationLoopEmail
-from update_loop_email import UpdateLoopEmail
-from command import Command
+from networking.smtp_service import SMTP_Service
+from projectors.projector import Projector
+from projectors.projector_roadie4k45 import ProjectorRoadie4K45
+from projectors.projector_jseries import ProjectorJSeries
+from projectors.projector_mseries import ProjectorMSeries
+from actions.action_manager import ActionManager
+from commands.temperature_request import TemperatureRequest
+from commands.configuration_request import ConfigurationRequest
+from commands.warning_loop_email import WarningLoopEmail
+from commands.update_loop_email import UpdateLoopEmail
+from commands.command import Command
+from projectors.projector_configuration import ProjectorConfiguration
 
 def main():
 	# Init projector details
@@ -23,11 +27,21 @@ def main():
 			family = input('Family of projector {}: '.format(i))
 			IP = input('IP of projector {}: '.format(i))
 			PORT = int(input('Port of projector {}: '.format(i)))
+
 			if family == 'roadie4k45':
-				projectors[name] = ProjectorRoadie4k45(name, IP, PORT)
+				projectors[name] = ProjectorRoadie4K45(name, IP, PORT)
+			elif family == 'jseries':
+				projectors[name] = ProjectorJSeries(name, IP, PORT)
+			elif family == 'mseries':
+				projectors[name] = ProjectorMSeries(name, IP, PORT)
+
 			if not projectors[name].connect():
 				del projectors[name]
 				projector_names.remove(name)
+				continue
+
+			projectors[name].update_configuration()
+
 		if not projectors:
 			print()
 
@@ -56,7 +70,7 @@ def main():
 		# Parse arguments
 		astr = input('\n$: ')
 		if astr == 'exit':
-			quit()
+			break
 		try:
 			args = vars(parser.parse_args(shlex.split(astr)))
 		except SystemExit:
@@ -85,9 +99,11 @@ def main():
 				else:
 					if command_code == 'temp':
 						action = TemperatureRequest(projectors[projector_name])
-					elif command_code == 'is_okay_loop_email':
+					elif command_code == 'conf':
+						action = ConfigurationRequest(projectors[projector_name])
+					elif command_code == 'warning_loop_email':
 						warning_interval = int(args['predefined'][1])
-						action = IsOkayInterrogationLoopEmail(projectors[projector_name], warning_interval, smtp_recipients_1, smtp_service_1)
+						action = WarningLoopEmail(projectors[projector_name], warning_interval, smtp_recipients_1, smtp_service_1)
 					elif command_code == 'update_loop_email':
 						update_interval = int(args['predefined'][1])
 						action = UpdateLoopEmail(projectors[projector_name], update_interval, smtp_recipients_1, smtp_service_1)
@@ -103,12 +119,13 @@ def main():
 					while True:
 						if action in action_manager.responses:
 							if not action_manager.responses[action]:
-								print('\n\t# Projector \'{}\' (IP: {}) did not respond'.format(projector_name, projectors[projector_name].IP[-3:]))
+								print('\n\t# Projector \'{}\' (IP: {}) did not respond'.format(projector_name, projectors[projector_name].last_IP_digits))
 							else:
-								print('\n\t# Projector \'{}\' (IP: {}) sent following response:'.format(projector_name, projectors[projector_name].IP[-3:]))
+								print('\n\t# Projector \'{}\' (IP: {}) sent the following response:'.format(projector_name, projectors[projector_name].last_IP_digits))
 								action.print_response()
 							action_manager.clear_reponse(action)
 							break
+	action_manager.exit()
 
 if __name__ == '__main__':
 	main()

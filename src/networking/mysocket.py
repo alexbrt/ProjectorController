@@ -23,7 +23,7 @@ class MySocket:
 				raise RuntimeError('Socket connection broken')
 			totalsent = totalsent + sent
 
-	def receive(self, timeout = 1.5):
+	def receive(self, timeout = 2):
 		# Make socket non blocking
 		self.sock.setblocking(0)
 
