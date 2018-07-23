@@ -51,7 +51,7 @@ def main():
 	parser.add_argument('-w', '--wait', action = 'store_true', help = 'wait for reponse after sending command?')
 
 	# Init SMTP
-	smtp_credentials_1 = open('smtp_credentials.txt', 'r').read().splitlines()
+	smtp_credentials_1 = open('./smtp_credentials.txt', 'r').read().splitlines()
 	smtp_user_1 = smtp_credentials_1[0][len('user = '):]
 	smtp_password_1 = smtp_credentials_1[1][len('password = '):]
 	smtp_recipients_1 = [recipient.strip() for recipient in smtp_credentials_1[2][len('recipients = '):].split(",")]
