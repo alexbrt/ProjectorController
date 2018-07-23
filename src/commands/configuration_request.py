@@ -7,9 +7,9 @@ class ConfigurationRequest(OneTimeAction):
 		self.code = 'conf'
 
 	def exec(self):
-		self.response = self.projector.get_configuration()
+		self.response = self.projector.get_configuration_group()
 		return self.response
 
 	def print_response(self):
-		for conf in self.responses:
+		for conf in self.response:
 			print('\t\t/ {}: {}'.format(conf, self.response[conf]))

@@ -4,6 +4,7 @@ import shlex
 from networking.smtp_service import SMTP_Service
 from projectors.projector import Projector
 from projectors.projector_roadie4k45 import ProjectorRoadie4K45
+from projectors.projector_boxer import ProjectorBoxer
 from projectors.projector_jseries import ProjectorJSeries
 from projectors.projector_mseries import ProjectorMSeries
 from actions.action_manager import ActionManager
@@ -19,7 +20,7 @@ def main():
 	projector_names = []
 	while not projectors:
 		number_of_projectors = int(input('Number of projectors: '))
-		for i in range(number_of_projectors):
+		for i in range(1, number_of_projectors + 1):
 			print()
 			name = input('Name of projector {}: '.format(i))
 			projector_names.append(name)
@@ -27,11 +28,13 @@ def main():
 			IP = input('IP of projector {}: '.format(i))
 			PORT = int(input('Port of projector {}: '.format(i)))
 
-			if family == 'roadie4k45':
+			if family == 'roadie4k45' or family == 'r':
 				projectors[name] = ProjectorRoadie4K45(name, IP, PORT)
-			elif family == 'jseries':
+			elif family == 'boxer' or family == 'b':
+				projectors[name] = ProjectorBoxer(name, IP, PORT)
+			elif family == 'jseries' or family == 'j':
 				projectors[name] = ProjectorJSeries(name, IP, PORT)
-			elif family == 'mseries':
+			elif family == 'mseries' or family == 'm':
 				projectors[name] = ProjectorMSeries(name, IP, PORT)
 
 			if not projectors[name].connect():
@@ -47,7 +50,7 @@ def main():
 	parser.add_argument('-v', '--videoprojector', nargs = '*', help = 'videoprojector name / identifier')
 	parser.add_argument('-c', '--command', help = 'command to be sent to videoprojector')
 	parser.add_argument('-p', '--predefined', nargs = '*', help = 'predefined command, such as \'temp\', \'temp_loop_email\'')
-	parser.add_argument('-w', '--wait', action = 'store_true', help = 'wait for reponse after sending command?')
+	# parser.add_argument('-w', '--wait', action = 'store_true', help = 'wait for reponse after sending command?') # No longer needed
 
 	# Init SMTP
 	smtp_credentials_1 = open('./smtp_credentials.txt', 'r').read().splitlines()
@@ -91,21 +94,20 @@ def main():
 					for act in action_manager.actions: # parse current actions
 						if act.code == command_code and act.projector.name in destination_projectors:
 							action_manager.remove_action(act)
-					#action_manager.remove_action(recurrent_actions[projector_name][args['predefined'][0]])
-					#del recurrent_actions[projector_name][args['predefined'][0]]
 				else:
 					if command_code == 'temp':
 						action = TemperatureRequest(projectors[projector_name])
 					elif command_code == 'conf':
 						action = ConfigurationRequest(projectors[projector_name])
 					elif command_code == 'warning_loop_email':
-						warning_interval = int(args['predefined'][1])
+						warning_interval = float(args['predefined'][1])
 						action = WarningLoopEmail(projectors[projector_name], warning_interval, smtp_recipients_1, smtp_service_1)
 					elif command_code == 'update_loop_email':
-						update_interval = int(args['predefined'][1])
+						update_interval = float(args['predefined'][1])
 						action = UpdateLoopEmail(projectors[projector_name], update_interval, smtp_recipients_1, smtp_service_1)
 			elif args['command']:
-				action = Command(projectors[projector_name], args['command'], args['wait'], args['wait'])
+				is_request = '?' in args['command']
+				action = Command(projectors[projector_name], args['command'], is_request, is_request)
 
 			# Add action
 			if action != None:

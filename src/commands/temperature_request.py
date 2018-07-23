@@ -7,7 +7,7 @@ class TemperatureRequest(OneTimeAction):
 		self.code = 'temp'
 
 	def exec(self):
-		self.response = self.projector.request_temperatures()
+		self.response = self.projector.request_temperature_group()
 		return self.response
 
 	def print_response(self):

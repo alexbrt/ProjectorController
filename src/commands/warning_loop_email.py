@@ -29,10 +29,10 @@ class WarningLoopEmail(RecurrentAction):
 				subject = 'PJ{} \'{}\' WARNING #{}'.format(self.projector.last_IP_digits, self.projector.name, self.warning_index)
 				message = 'PJ{} {} warning at {} on {}:\n\n'.format(self.projector.last_IP_digits, self.projector.family, time.strftime('%X'), time.strftime('%x'))
 				# Gather info
-				for sensor_name in self.projector.status.temperatures:
+				for sensor_name in self.projector.status.temperature_group:
 					temperature_warning = '{}: {} (max acceptable: {}, diff: {})'
-					if self.projector.status.temperatures[sensor_name] >= self.projector.temperature_thresholds[sensor_ID]:
-						message += temperature_warning.format(sensor_name, self.projector.status.temperatures[sensor_name], self.projector.temperature_thresholds[sensor_name], self.projector.status.temperatures[sensor_name] - self.projector.temperature_thresholds[sensor_name])
+					if self.projector.status.temperature_group[sensor_name] >= self.projector.temperature_thresholds[sensor_name]:
+						message += temperature_warning.format(sensor_name, self.projector.status.temperature_group[sensor_name], self.projector.temperature_thresholds[sensor_name], self.projector.status.temperature_group[sensor_name] - self.projector.temperature_thresholds[sensor_name])
 						message += '\n'
 				self.smtp_service.sendmail(self.sender, self.recipients, subject, message)
 				self.warning_index += 1

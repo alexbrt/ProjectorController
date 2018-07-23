@@ -32,11 +32,8 @@ class ProjectorRoadie4K45(Projector):
 			'Secondary EVB Temperature': 70
 		}
 
-	def update(self):
-		self.status.temperatures = self.request_temperatures()
-
 	def okay(self):
-		for sensor_ID in self.status.temperatures:
-			if self.status.temperatures[sensor_ID] >= self.temperature_thresholds[sensor_ID]:
+		for sensor_name in self.status.temperature_group:
+			if self.status.temperature_group[sensor_name] >= self.temperature_thresholds[sensor_name]:
 				return False
 		return True

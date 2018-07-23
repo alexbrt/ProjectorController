@@ -33,6 +33,9 @@
     <Compile Include="networking\mysocket.py" />
     <Compile Include="networking\smtp_service.py" />
     <Compile Include="projectors\projector.py" />
+    <Compile Include="projectors\projector_boxer.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="projectors\projector_jseries.py" />
     <Compile Include="projectors\projector_mseries.py" />
     <Compile Include="projectors\projector_roadie4k45.py" />
