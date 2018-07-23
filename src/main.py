@@ -48,15 +48,15 @@ def main():
 	# Init argument parser
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-v', '--videoprojector', nargs = '*', help = 'videoprojector name / identifier')
-	parser.add_argument('-c', '--command', help = 'command to be sent to videoprojector')
-	parser.add_argument('-p', '--predefined', nargs = '*', help = 'predefined command, such as \'temp\', \'temp_loop_email\'')
+	parser.add_argument('-c', '--command', help = 'serial command to be sent to videoprojector')
+	parser.add_argument('-p', '--predefined', nargs = '*', help = 'predefined command, such as \'temp\', \'conf\', \'temp_loop_email\', or \'warning_loop_email\'')
 	# parser.add_argument('-w', '--wait', action = 'store_true', help = 'wait for reponse after sending command?') # No longer needed
 
 	# Init SMTP
 	smtp_credentials_1 = open('./smtp_credentials.txt', 'r').read().splitlines()
 	smtp_user_1 = smtp_credentials_1[0][len('user = '):]
 	smtp_password_1 = smtp_credentials_1[1][len('password = '):]
-	smtp_recipients_1 = [recipient.strip() for recipient in smtp_credentials_1[2][len('recipients = '):].split(",")]
+	smtp_recipients_1 = [recipient.strip() for recipient in smtp_credentials_1[2][len('recipients = '):].split(',')]
 	smtp_service_1 = SMTP_Service(smtp_user_1, smtp_password_1, 'smtp.gmail.com')
 
 	# Init background action manager
