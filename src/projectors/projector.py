@@ -2,7 +2,6 @@ import re
 
 from networking.mysocket import MySocket
 from projectors.projector_status import ProjectorStatus
-from projectors.projector_configuration import ProjectorConfiguration
 
 class Projector:
 	def __init__(self, name : str, IP : str, PORT : str):
@@ -12,7 +11,6 @@ class Projector:
 		self.PORT = PORT
 		self.socket = MySocket()
 		self.status = ProjectorStatus()
-		self.configuration = ProjectorConfiguration()
 		self.family = ''
 
 	def connect(self):
@@ -37,12 +35,12 @@ class Projector:
 			matches = re.findall(r'"([^"]*)"', conf_request_response)
 			for i in range(int(len(matches) / 2)):
 				if matches[i*2] and matches[i*2] != 'N/A':
-					self.configuration.values[matches[i*2 + 1]] = matches[i*2]
+					self.status.configuration[matches[i*2 + 1]] = matches[i*2]
 
 	def get_configuration(self):
-		if not self.configuration.values:
+		if not self.status.configuration:
 			self.update_configuration()
-		return self.configuration
+		return self.status.configuration
 
 	def get_status(self):
 		return self.status

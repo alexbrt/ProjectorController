@@ -11,5 +11,5 @@ class ConfigurationRequest(OneTimeAction):
 		return self.response
 
 	def print_response(self):
-		for conf in self.response.values:
-			print('\t\t/ {}: {}'.format(conf, self.response.values[conf]))
+		for conf in self.responses:
+			print('\t\t/ {}: {}'.format(conf, self.response[conf]))

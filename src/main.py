@@ -12,7 +12,6 @@ from commands.configuration_request import ConfigurationRequest
 from commands.warning_loop_email import WarningLoopEmail
 from commands.update_loop_email import UpdateLoopEmail
 from commands.command import Command
-from projectors.projector_configuration import ProjectorConfiguration
 
 def main():
 	# Init projector details
