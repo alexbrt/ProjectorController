@@ -40,8 +40,6 @@ def main():
 				projector_names.remove(name)
 				continue
 
-			projectors[name].update_configuration()
-
 		if not projectors:
 			print()
 

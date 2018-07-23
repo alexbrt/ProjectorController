@@ -16,12 +16,13 @@ class Command(OneTimeAction):
 		return self.response
 
 	def print_response(self):
-		temp = ''
+		formatted = ''
 		start_index = 0
 		for m in re.finditer(r'(?<!\\)\)', self.response):
 			if start_index != 0:
-				temp += '\n'
-			temp += '\t\t/ ' + self.response[start_index:m.end()]
+				formatted += '\n'
+			formatted += '\t\t/ ' + self.response[start_index:m.end()]
 			start_index = m.end()
-
-		print(temp)
+		else:
+			formatted = '\t\t/ ' + self.response
+		print(formatted)
