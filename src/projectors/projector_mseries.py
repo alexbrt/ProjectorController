@@ -26,4 +26,3 @@ class ProjectorMSeries(Projector):
 			if self.status.temperature_group[sensor_name] >= self.temperature_thresholds[sensor_name]:
 				return False
 		return True
-	
