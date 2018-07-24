@@ -8,7 +8,7 @@ class ProjectorBoxer(Projector):
 		self.family = 'Boxer'
 		# Mapping from sensor name to temperature threshold
 		self.temperature_thresholds = {
-			r'Air Intake Temperature (Temp 2)': 47, #
+			'Air Intake Temperature (Temp 2)': 47, #
 			'Main Control Board Temperature': 82, #
 			'Main Control Board FPGA Temperature': 82, #
 			'Backplane Temperature': 82,
@@ -16,7 +16,7 @@ class ProjectorBoxer(Projector):
 			'Image Processor Warp-Red Temperature': 82,
 			'Image Processor Warp-Green Temperature': 82,
 			'Image Processor Warp-Blue Temperature': 82,
-			r'DMD Waterblock Temperature \(Temp 4\)': 70,
+			'DMD Waterblock Temperature \(Temp 4\)': 70,
 			'Formatter-Red Temperature': 82,
 			'Formatter-Green Temperature': 82,
 			'Formatter-Blue Temperature': 82,
