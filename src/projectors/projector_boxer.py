@@ -8,7 +8,7 @@ class ProjectorBoxer(Projector):
 		self.family = 'Boxer'
 		# Mapping from sensor name to temperature threshold
 		self.temperature_thresholds = {
-			r'Air Intake Temperature \(Temp 2\)': 47, #
+			r'Air Intake Temperature (Temp 2)': 47, #
 			'Main Control Board Temperature': 82, #
 			'Main Control Board FPGA Temperature': 82, #
 			'Backplane Temperature': 82,

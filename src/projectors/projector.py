@@ -39,7 +39,7 @@ class Projector:
 	def update(self):
 		# self.status.system_group = self.request_system_group()
 		# self.status.signal_group = self.request_signal_group()
-		# self.status.lamp_group = self.request_lamp_group()
+		self.status.lamp_group = self.request_lamp_group()
 		self.status.temperature_group = self.request_temperature_group()
 		# self.status.cooling_group = self.request_cooling_group()
 		# self.status.health_group = self.request_health_group()
@@ -89,7 +89,7 @@ class Projector:
 			matches = re.findall(r'"([^"]*)"', lamp_request_response)
 			for i in range(int(len(matches) / 2)):
 				if matches[i*2] and matches[i*2] != 'N/A':
-					lamp_group[matches[i*2 + 1]] = matches[i*2]
+					lamp_group[matches[i*2 + 1].replace('\\', '')] = matches[i*2].replace('\\', '')
 		return lamp_group
 
 	def update_version_group(self):
@@ -112,7 +112,7 @@ class Projector:
 			matches = re.findall(r'"([^"]*)"', temp_request_response)
 			for i in range(int(len(matches) / 2)):
 				if matches[i*2] and matches[i*2] != 'N/A' and '°C' in matches[i*2]:
-					temperatures[matches[i*2 + 1]] = int(re.findall(r'\d+', matches[i*2])[0])
+					temperatures[matches[i*2 + 1].replace('\\', '')] = int(re.findall(r'\d+', matches[i*2])[0])
 		return temperatures
 
 	def request_cooling_group(self):

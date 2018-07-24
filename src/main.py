@@ -10,6 +10,7 @@ from projectors.projector_mseries import ProjectorMSeries
 from actions.action_manager import ActionManager
 from commands.temperature_request import TemperatureRequest
 from commands.configuration_request import ConfigurationRequest
+from commands.lamp_request import LampRequest
 from commands.warning_loop_email import WarningLoopEmail
 from commands.update_loop_email import UpdateLoopEmail
 from commands.command import Command
@@ -99,6 +100,8 @@ def main():
 						action = TemperatureRequest(projectors[projector_name])
 					elif command_code == 'conf':
 						action = ConfigurationRequest(projectors[projector_name])
+					elif command_code == 'lamp':
+						action = LampRequest(projectors[projector_name])
 					elif command_code == 'warning_loop_email':
 						warning_interval = float(args['predefined'][1])
 						action = WarningLoopEmail(projectors[projector_name], warning_interval, smtp_recipients_1, smtp_service_1)
