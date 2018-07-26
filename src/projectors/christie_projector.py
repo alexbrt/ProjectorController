@@ -2,11 +2,12 @@ import re
 
 from networking.mysocket import MySocket
 from projectors.projector import Projector
-from projectors.christie_projector_status import ProjectorStatus
+from projectors.christie_projector_status import ChristieProjectorStatus
 
 class ChristieProjector(Projector):
 	def __init__(self, name : str, IP : str, PORT : str):
 		super().__init__(name, IP, PORT)
+		self.status = ChristieProjectorStatus()
 
 	def connect(self):
 		try:
@@ -41,7 +42,7 @@ class ChristieProjector(Projector):
 		# self.status.serial_group = self.request_serial_group()
 
 	def is_okay(self):
-		#raise NotImplementedError('Subclass must implement abstract method')
+		# Needs checking but probably the same for all derived classes
 		return None
 
 	def update_configuration_group(self):

@@ -1,7 +1,6 @@
 import re
 
 from networking.mysocket import MySocket
-from projectors.christie_projector_status import ProjectorStatus
 
 class Projector:
 	def __init__(self, name : str, IP : str, PORT : str):
@@ -10,7 +9,6 @@ class Projector:
 		self.last_IP_digits = IP.split('.')[-1]
 		self.PORT = PORT
 		self.socket = MySocket()
-		self.status = ProjectorStatus()
 		self.family = ''
 
 	def connect(self):

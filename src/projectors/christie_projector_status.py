@@ -1,4 +1,4 @@
-class ProjectorStatus:
+class ChristieProjectorStatus:
 	def __init__(self):
 		self.configuration_group = {}
 		self.system_group = {}

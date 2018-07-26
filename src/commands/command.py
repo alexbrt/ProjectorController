@@ -19,7 +19,7 @@ class Command(OneTimeAction):
 		formatted = ''
 		start_index = 0
 		occ = re.finditer(r'(?<!\\)\)', self.response)
-		if occ:
+		if any(True for _ in occ):
 			for m in occ:
 				if start_index != 0:
 					formatted += '\n'
