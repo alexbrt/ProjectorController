@@ -1,8 +1,8 @@
 import re
 
-from projectors.projector import Projector
+from projectors.christie_projector import ChristieProjector
 
-class ProjectorBoxer(Projector):
+class ProjectorBoxer(ChristieProjector):
 	def __init__(self, name : str, IP : str, PORT : str):
 		super().__init__(name, IP, PORT)
 		self.family = 'Boxer'

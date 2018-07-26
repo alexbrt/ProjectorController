@@ -1,7 +1,7 @@
-from projectors.projector import Projector
+from projectors.christie_projector import ChristieProjector
 
 class Action:
-	def __init__(self, projector: Projector, wait_for_response: bool, needs_printing: bool = False):
+	def __init__(self, projector: ChristieProjector, wait_for_response: bool, needs_printing: bool = False):
 		self.projector = projector
 		self.wait_for_response = wait_for_response
 		self.response = None

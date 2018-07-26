@@ -1,8 +1,8 @@
 from actions.one_time_action import OneTimeAction
-from projectors.projector import Projector
+from projectors.christie_projector import ChristieProjector
 
 class LampRequest(OneTimeAction):
-	def __init__(self, projector: Projector):
+	def __init__(self, projector: ChristieProjector):
 		super().__init__(projector, wait_for_response = True, needs_printing = True)
 		self.code = 'lamp'
 

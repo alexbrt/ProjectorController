@@ -2,11 +2,10 @@ import argparse
 import shlex
 
 from networking.smtp_service import SMTP_Service
-from projectors.projector import Projector
-from projectors.projector_roadie4k45 import ProjectorRoadie4K45
-from projectors.projector_boxer import ProjectorBoxer
-from projectors.projector_jseries import ProjectorJSeries
-from projectors.projector_mseries import ProjectorMSeries
+from projectors.christie_projector_roadie4k45 import ProjectorRoadie4K45
+from projectors.christie_projector_boxer import ProjectorBoxer
+from projectors.christie_projector_jseries import ProjectorJSeries
+from projectors.christie_projector_mseries import ProjectorMSeries
 from actions.action_manager import ActionManager
 from commands.temperature_request import TemperatureRequest
 from commands.configuration_request import ConfigurationRequest

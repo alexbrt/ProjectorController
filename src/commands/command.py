@@ -1,10 +1,10 @@
 import re
 
 from actions.one_time_action import OneTimeAction
-from projectors.projector import Projector
+from projectors.christie_projector import ChristieProjector
 
 class Command(OneTimeAction):
-	def __init__(self, projector: Projector, cmd: str, wait_for_response: bool, needs_printing: bool):
+	def __init__(self, projector: ChristieProjector, cmd: str, wait_for_response: bool, needs_printing: bool):
 		super().__init__(projector, wait_for_response, needs_printing)
 		self.projector = projector
 		self.cmd = cmd
