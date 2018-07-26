@@ -44,15 +44,13 @@ class UpdateLoopEmail(RecurrentAction):
 			# Gather lamp info
 			message += '# Lamps\n'
 			for lamp_info in self.projector.status.lamp_group:
-				lamp_update = '\t{}: {}\n'
-				message += lamp_update.format(lamp_info, self.projector.status.lamp_group[lamp_info].replace('\\', ''))
+				message += '\t{}: {}\n'.format(lamp_info, self.projector.status.lamp_group[lamp_info].replace('\\', ''))
 			message += '\n'
 
 			# Gather temperature info
 			message += '# Temperatures\n'
 			for sensor_name in self.projector.status.temperature_group:
-				temperature_update = '\t{}: current {} / warning {}\n'
-				message += temperature_update.format(sensor_name, self.projector.status.temperature_group[sensor_name], self.projector.temperature_thresholds[sensor_name])
+				message += '\t{}: current {} / warning {}\n'.format(sensor_name, self.projector.status.temperature_group[sensor_name], self.projector.temperature_thresholds[sensor_name])
 				
 			self.smtp_service.sendmail(self.sender, self.recipients, subject, message)
 			self.update_index += 1
