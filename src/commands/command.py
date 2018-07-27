@@ -19,12 +19,12 @@ class Command(OneTimeAction):
 		formatted = ''
 		start_index = 0
 		occ = re.finditer(r'(?<!\\)\)', self.response)
-		if any(True for _ in occ):
-			for m in occ:
-				if start_index != 0:
-					formatted += '\n'
-				formatted += '\t\t/ ' + self.response[start_index:m.end()]
-				start_index = m.end()
+		for m in occ:
+			if start_index != 0:
+				formatted += '\n'
+			formatted += '\t\t/ ' + self.response[start_index:m.end()]
+			start_index = m.end()
 		else:
-			formatted = '\t\t/ ' + self.response
+			if not formatted:
+				formatted = '\t\t/ ' + self.response
 		print(formatted)
