@@ -33,7 +33,7 @@ class ChristieProjector(Projector):
 		return self.status
 	
 	def update(self):
-		# self.status.system_group = self.request_system_group()
+		self.status.system_group = self.request_system_group()
 		# self.status.signal_group = self.request_signal_group()
 		self.status.lamp_group = self.request_lamp_group()
 		self.status.temperature_group = self.request_temperature_group()

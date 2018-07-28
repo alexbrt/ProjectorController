@@ -39,9 +39,8 @@ class UpdateLoopEmail(RecurrentAction):
 
 			# Gather system info
 			message += '# System\n'
-			system = self.projector.request_system_group()
-			for s in system:
-				message += '\t{}: {}\n'.format(s, system[s])
+			for s in self.projector.status.system_group:
+				message += '\t{}: {}\n'.format(s, self.projector.status.system_group[s])
 			message += '\n'
 
 			# Gather signal info
@@ -49,7 +48,7 @@ class UpdateLoopEmail(RecurrentAction):
 			# Gather lamp info
 			message += '# Lamps\n'
 			for lamp_info in self.projector.status.lamp_group:
-				message += '\t{}: {}\n'.format(lamp_info, self.projector.status.lamp_group[lamp_info].replace('\\', ''))
+				message += '\t{}: {}\n'.format(lamp_info, self.projector.status.lamp_group[lamp_info])
 			message += '\n'
 
 			# Gather temperature info
