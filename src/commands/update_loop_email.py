@@ -39,7 +39,7 @@ class UpdateLoopEmail(RecurrentAction):
 
 			# Gather system info
 			message += '# System\n'
-			system = self.projector.get_system_group()
+			system = self.projector.request_system_group()
 			for s in system:
 				message += '\t{}: {}\n'.format(s, system[s])
 			message += '\n'
