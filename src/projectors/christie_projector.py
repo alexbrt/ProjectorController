@@ -65,7 +65,7 @@ class ChristieProjector(Projector):
 			matches = re.findall(r'"([^"]*)"', system_request_response)
 			for i in range(int(len(matches) / 2)):
 				if matches[i*2] and matches[i*2] != 'N/A':
-					system_group[matches[i*2 + 1]] = matches[i*2]
+					system_group[matches[i*2 + 1].replace('\\', '')] = matches[i*2].replace('\\', '')
 		return system_group
 
 	def request_signal_group(self):
