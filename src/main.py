@@ -9,6 +9,7 @@ from projectors.christie_projector_mseries import ProjectorMSeries
 from actions.action_manager import ActionManager
 from commands.temperature_request import TemperatureRequest
 from commands.configuration_request import ConfigurationRequest
+from commands.system_request import SystemRequest
 from commands.lamp_request import LampRequest
 from commands.warning_loop_email import WarningLoopEmail
 from commands.update_loop_email import UpdateLoopEmail
@@ -49,7 +50,7 @@ def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-v', '--videoprojector', nargs = '*', help = 'videoprojector name / identifier')
 	parser.add_argument('-c', '--command', help = 'serial command to be sent to videoprojector')
-	parser.add_argument('-p', '--predefined', nargs = '*', help = 'predefined command, such as \'temp\', \'conf\', \'temp_loop_email\', or \'warning_loop_email\'')
+	parser.add_argument('-p', '--predefined', nargs = '*', help = 'predefined command, such as \'temp\', \'conf\', \'sys\', \'temp_loop_email\', or \'warning_loop_email\'')
 	# parser.add_argument('-w', '--wait', action = 'store_true', help = 'wait for reponse after sending command?') # No longer needed
 
 	# Init SMTP
@@ -99,6 +100,8 @@ def main():
 						action = TemperatureRequest(projectors[projector_name])
 					elif command_code == 'conf':
 						action = ConfigurationRequest(projectors[projector_name])
+					elif command_code == 'sys':
+						action = SystemRequest(projectors[projector_name])
 					elif command_code == 'lamp':
 						action = LampRequest(projectors[projector_name])
 					elif command_code == 'warning_loop_email':

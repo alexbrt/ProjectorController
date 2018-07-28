@@ -28,6 +28,9 @@
     <Compile Include="commands\lamp_request.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="commands\system_request.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="commands\warning_loop_email.py" />
     <Compile Include="commands\temperature_request.py" />
     <Compile Include="commands\update_loop_email.py">
