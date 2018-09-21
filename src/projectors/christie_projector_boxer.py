@@ -16,7 +16,7 @@ class ProjectorBoxer(ChristieProjector):
 			'Image Processor Warp-Red Temperature': 82,
 			'Image Processor Warp-Green Temperature': 82,
 			'Image Processor Warp-Blue Temperature': 82,
-			'DMD Waterblock Temperature \(Temp 4\)': 70,
+			'DMD Waterblock Temperature (Temp 4)': 70,
 			'Formatter-Red Temperature': 82,
 			'Formatter-Green Temperature': 82,
 			'Formatter-Blue Temperature': 82,
