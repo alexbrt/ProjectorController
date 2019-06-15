@@ -31,7 +31,6 @@
     <Compile Include="commands\system_request.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="commands\warning_loop_email.py" />
     <Compile Include="commands\temperature_request.py" />
     <Compile Include="commands\update_loop_email.py">
       <SubType>Code</SubType>
@@ -39,12 +38,6 @@
     <Compile Include="networking\mysocket.py" />
     <Compile Include="networking\smtp_service.py" />
     <Compile Include="projectors\christie_projector.py" />
-    <Compile Include="projectors\christie_projector_boxer.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="projectors\christie_projector_jseries.py" />
-    <Compile Include="projectors\christie_projector_mseries.py" />
-    <Compile Include="projectors\christie_projector_roadie4k45.py" />
     <Compile Include="projectors\christie_projector_status.py" />
     <Compile Include="main.py" />
     <Compile Include="projectors\projector.py">

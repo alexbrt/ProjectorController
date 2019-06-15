@@ -5,9 +5,10 @@ from projectors.projector import Projector
 from projectors.christie_projector_status import ChristieProjectorStatus
 
 class ChristieProjector(Projector):
-	def __init__(self, name : str, IP : str, PORT : str):
+	def __init__(self, name : str, family : str, IP : str, PORT : str):
 		super().__init__(name, IP, PORT)
 		self.status = ChristieProjectorStatus()
+		self.family = family
 
 	def connect(self):
 		try:
@@ -40,10 +41,6 @@ class ChristieProjector(Projector):
 		# self.status.cooling_group = self.request_cooling_group()
 		# self.status.health_group = self.request_health_group()
 		# self.status.serial_group = self.request_serial_group()
-
-	def is_okay(self):
-		# Needs checking but probably the same for all derived classes
-		return None
 
 	def update_configuration_group(self):
 		conf_request_response = self.send_command('(SST+CONF?)', wait_for_response = True)

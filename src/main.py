@@ -2,16 +2,12 @@ import argparse
 import shlex
 
 from networking.smtp_service import SMTP_Service
-from projectors.christie_projector_roadie4k45 import ProjectorRoadie4K45
-from projectors.christie_projector_boxer import ProjectorBoxer
-from projectors.christie_projector_jseries import ProjectorJSeries
-from projectors.christie_projector_mseries import ProjectorMSeries
+from projectors.christie_projector import ChristieProjector
 from actions.action_manager import ActionManager
 from commands.temperature_request import TemperatureRequest
 from commands.configuration_request import ConfigurationRequest
 from commands.system_request import SystemRequest
 from commands.lamp_request import LampRequest
-from commands.warning_loop_email import WarningLoopEmail
 from commands.update_loop_email import UpdateLoopEmail
 from commands.command import Command
 
@@ -28,15 +24,8 @@ def main():
 			family = input('Family of projector {}: '.format(i))
 			IP = input('IP of projector {}: '.format(i))
 			PORT = int(input('Port of projector {}: '.format(i)))
-
-			if family == 'roadie4k45' or family == 'r':
-				projectors[name] = ProjectorRoadie4K45(name, IP, PORT)
-			elif family == 'boxer' or family == 'b':
-				projectors[name] = ProjectorBoxer(name, IP, PORT)
-			elif family == 'jseries' or family == 'j':
-				projectors[name] = ProjectorJSeries(name, IP, PORT)
-			elif family == 'mseries' or family == 'm':
-				projectors[name] = ProjectorMSeries(name, IP, PORT)
+			# Init projector
+			projectors[name] = ChristieProjector(name, family, IP, PORT)
 
 			if not projectors[name].connect():
 				del projectors[name]
@@ -50,8 +39,7 @@ def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-v', '--videoprojector', nargs = '*', help = 'videoprojector name / identifier')
 	parser.add_argument('-c', '--command', help = 'serial command to be sent to videoprojector')
-	parser.add_argument('-p', '--predefined', nargs = '*', help = 'predefined command, such as \'temp\', \'conf\', \'sys\', \'temp_loop_email\', or \'warning_loop_email\'')
-	# parser.add_argument('-w', '--wait', action = 'store_true', help = 'wait for reponse after sending command?') # No longer needed
+	parser.add_argument('-p', '--predefined', nargs = '*', help = 'predefined command, such as \'temp\', \'conf\', \'sys\', \'lamp\', or \'update_loop_email\'')
 
 	# Init SMTP
 	smtp_credentials_1 = open('./smtp_credentials.txt', 'r').read().splitlines()
@@ -104,9 +92,6 @@ def main():
 						action = SystemRequest(projectors[projector_name])
 					elif command_code == 'lamp':
 						action = LampRequest(projectors[projector_name])
-					elif command_code == 'warning_loop_email':
-						warning_interval = float(args['predefined'][1])
-						action = WarningLoopEmail(projectors[projector_name], warning_interval, smtp_recipients_1, smtp_service_1)
 					elif command_code == 'update_loop_email':
 						update_interval = float(args['predefined'][1])
 						action = UpdateLoopEmail(projectors[projector_name], update_interval, smtp_recipients_1, smtp_service_1)

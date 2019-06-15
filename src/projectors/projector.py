@@ -9,7 +9,6 @@ class Projector:
 		self.last_IP_digits = IP.split('.')[-1]
 		self.PORT = PORT
 		self.socket = MySocket()
-		self.family = ''
 
 	def connect(self):
 		try:
