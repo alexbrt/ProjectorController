@@ -15,6 +15,13 @@ def main():
 	# Init projector details
 	projectors = {}
 	projector_names = []
+	IP_class = input("IP class (leave blank if different among projectors): ")
+	default_port = input("Default port (leave blank if different among projectors): ")
+	print()
+	if IP_class:
+		IP_class += '.'
+	if default_port:
+		default_port = int(default_port)
 	while not projectors:
 		number_of_projectors = int(input('Number of projectors: '))
 		for i in range(1, number_of_projectors + 1):
@@ -22,8 +29,11 @@ def main():
 			name = input('Name of projector {}: '.format(i))
 			projector_names.append(name)
 			family = input('Family of projector {}: '.format(i))
-			IP = input('IP of projector {}: '.format(i))
-			PORT = int(input('Port of projector {}: '.format(i)))
+			IP = IP_class + input('IP of projector {}: {}'.format(i, IP_class))
+			if not default_port:
+				PORT = int(input('Port of projector {}: '.format(i)))
+			else:
+				PORT = default_port
 			# Init projector
 			projectors[name] = ChristieProjector(name, family, IP, PORT)
 
