@@ -25,13 +25,13 @@ class ActionManager:
 				return
 
 			for action in self.actions:
-				response = action.exec()
-				if action.wait_for_response:
-					self.responses[action] = response
+				self.responses[action] = action.exec()
 				if action.type == 'one time':
 					self.actions.remove(action)
 				elif action.type == 'recurrent':
 					pass # Nothing to do, action is recurrent so it stays in the list
+
+			time.sleep(0.1) # Sweep actions every 0.1 seconds
 		
 	def start(self):
 		self.background_thread.start()

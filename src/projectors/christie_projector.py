@@ -5,10 +5,9 @@ from projectors.projector import Projector
 from projectors.christie_projector_status import ChristieProjectorStatus
 
 class ChristieProjector(Projector):
-	def __init__(self, name : str, family : str, IP : str, PORT : str):
+	def __init__(self, name : str, IP : str, PORT : str):
 		super().__init__(name, IP, PORT)
 		self.status = ChristieProjectorStatus()
-		self.family = family
 
 	def connect(self):
 		try:
@@ -18,46 +17,80 @@ class ChristieProjector(Projector):
 			return False
 		return True
 
-	def send_command(self, cmd : str, wait_for_response : bool = False):
-		self.socket.send(cmd.encode())
-		if wait_for_response:
-			response = self.socket.receive().decode()
-			if response:
-				return response
-		return None
-
-	def get_status(self):
-		if not self.status.configuration_group:
-			self.update_configuration_group()
-		elif not self.status.version_group:
-			self.update_version_group()
-		return self.status
+	def send_command(self, cmd : str):
+		self.socket.send(('($' + cmd[1:]).encode())
+		response = self.socket.receive(b'$').decode()
+		return response
 	
 	def update(self):
+		if not self.status.configuration_group:
+			self.status.configuration_group = self.request_configuration_group()
+		if not self.status.version_group:
+			self.status.version_group = self.request_version_group()
 		self.status.system_group = self.request_system_group()
-		# self.status.signal_group = self.request_signal_group()
 		self.status.lamp_group = self.request_lamp_group()
 		self.status.temperature_group = self.request_temperature_group()
+		# self.status.signal_group = self.request_signal_group()
 		# self.status.cooling_group = self.request_cooling_group()
 		# self.status.health_group = self.request_health_group()
 		# self.status.serial_group = self.request_serial_group()
 
-	def update_configuration_group(self):
-		conf_request_response = self.send_command('(SST+CONF?)', wait_for_response = True)
+	# def get_status(self):
+	# 	if not self.status.configuration_group:
+	# 		self.update_configuration_group()
+	# 	elif not self.status.version_group:
+	# 		self.update_version_group()
+	# 	return self.status
+
+	# def update_configuration_group(self):
+	# 	conf_request_response = self.send_command('(SST+CONF?)')
+	# 	if conf_request_response:
+	# 		matches = re.findall(r'"([^"]*)"', conf_request_response)
+	# 		for i in range(int(len(matches) / 2)):
+	# 			if matches[i*2] and matches[i*2] != 'N/A':
+	# 				self.status.configuration_group[matches[i*2 + 1]] = matches[i*2]
+
+	# def get_configuration_group(self):
+	# 	if not self.status.configuration_group:
+	# 		self.update_configuration_group()
+	# 	return self.status.configuration_group
+
+	# def update_version_group(self):
+	# 	version_request_response = self.send_command('(SST+VERS?)')
+	# 	if version_request_response:
+	# 		matches = re.findall(r'"([^"]*)"', version_request_response)
+	# 		for i in range(int(len(matches) / 2)):
+	# 			if matches[i*2] and matches[i*2] != 'N/A':
+	# 				self.status.version_group[matches[i*2 + 1]] = matches[i*2]
+
+	# def get_version_group(self):
+	# 	if not self.status.version_group:
+	# 		self.update_version_group()
+	# 	return self.status.version_group
+
+	def request_configuration_group(self):
+		configuration_group = {}
+		conf_request_response = self.send_command('(SST+CONF?)')
 		if conf_request_response:
 			matches = re.findall(r'"([^"]*)"', conf_request_response)
 			for i in range(int(len(matches) / 2)):
 				if matches[i*2] and matches[i*2] != 'N/A':
-					self.status.configuration_group[matches[i*2 + 1]] = matches[i*2]
+					configuration_group[matches[i*2 + 1]] = matches[i*2]
+		return configuration_group
 
-	def get_configuration_group(self):
-		if not self.status.configuration_group:
-			self.update_configuration_group()
-		return self.status.configuration_group
+	def request_version_group(self):
+		version_group = {}
+		version_request_response = self.send_command('(SST+VERS?)')
+		if version_request_response:
+			matches = re.findall(r'"([^"]*)"', version_request_response)
+			for i in range(int(len(matches) / 2)):
+				if matches[i*2] and matches[i*2] != 'N/A':
+					version_group[matches[i*2 + 1]] = matches[i*2]
+		return version_group
 
 	def request_system_group(self):
 		system_group = {}
-		system_request_response = self.send_command('(SST+SYST?)', wait_for_response = True)
+		system_request_response = self.send_command('(SST+SYST?)')
 		if system_request_response:
 			matches = re.findall(r'"([^"]*)"', system_request_response)
 			for i in range(int(len(matches) / 2)):
@@ -67,7 +100,7 @@ class ChristieProjector(Projector):
 
 	def request_signal_group(self):
 		signal_group = {}
-		signal_request_response = self.send_command('(SST+SIGN?)', wait_for_response = True)
+		signal_request_response = self.send_command('(SST+SIGN?)')
 		if signal_request_response:
 			matches = re.findall(r'"([^"]*)"', signal_request_response)
 			for i in range(int(len(matches) / 2)):
@@ -77,7 +110,7 @@ class ChristieProjector(Projector):
 
 	def request_lamp_group(self):
 		lamp_group = {}
-		lamp_request_response = self.send_command('(SST+LAMP?)', wait_for_response = True)
+		lamp_request_response = self.send_command('(SST+LAMP?)')
 		if lamp_request_response:
 			matches = re.findall(r'"([^"]*)"', lamp_request_response)
 			for i in range(int(len(matches) / 2)):
@@ -85,22 +118,9 @@ class ChristieProjector(Projector):
 					lamp_group[matches[i*2 + 1].replace('\\', '')] = matches[i*2].replace('\\', '')
 		return lamp_group
 
-	def update_version_group(self):
-		version_request_response = self.send_command('(SST+VERS?)', wait_for_response = True)
-		if version_request_response:
-			matches = re.findall(r'"([^"]*)"', version_request_response)
-			for i in range(int(len(matches) / 2)):
-				if matches[i*2] and matches[i*2] != 'N/A':
-					self.status.version_group[matches[i*2 + 1]] = matches[i*2]
-
-	def get_version_group(self):
-		if not self.status.version_group:
-			self.update_version_group()
-		return self.status.version_group
-
 	def request_temperature_group(self):
 		temperatures = {}
-		temp_request_response = self.send_command('(SST+TEMP?)', wait_for_response = True)
+		temp_request_response = self.send_command('(SST+TEMP?)')
 		if temp_request_response:
 			matches = re.findall(r'"([^"]*)"', temp_request_response)
 			for i in range(int(len(matches) / 2)):
@@ -110,7 +130,7 @@ class ChristieProjector(Projector):
 
 	def request_cooling_group(self):
 		cooling_group = {}
-		cooling_request_response = self.send_command('(SST+COOL?)', wait_for_response = True)
+		cooling_request_response = self.send_command('(SST+COOL?)')
 		if cooling_request_response:
 			matches = re.findall(r'"([^"]*)"', cooling_request_response)
 			for i in range(int(len(matches) / 2)):
@@ -120,7 +140,7 @@ class ChristieProjector(Projector):
 
 	def request_health_group(self):
 		health_group = {}
-		health_request_response = self.send_command('(SST+HLTH?)', wait_for_response = True)
+		health_request_response = self.send_command('(SST+HLTH?)')
 		if health_request_response:
 			matches = re.findall(r'"([^"]*)"', health_request_response)
 			for i in range(int(len(matches) / 2)):
@@ -130,7 +150,7 @@ class ChristieProjector(Projector):
 
 	def request_serial_group(self):
 		serial_group = {}
-		serial_request_response = self.send_command('(SST+SERI?)', wait_for_response = True)
+		serial_request_response = self.send_command('(SST+SERI?)')
 		if serial_request_response:
 			matches = re.findall(r'"([^"]*)"', serial_request_response)
 			for i in range(int(len(matches) / 2)):

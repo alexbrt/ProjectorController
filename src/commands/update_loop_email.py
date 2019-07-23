@@ -6,12 +6,11 @@ from actions.recurrent_action import RecurrentAction
 
 class UpdateLoopEmail(RecurrentAction):
 	def __init__(self, projector : ChristieProjector, update_interval, recipients, smtp_service : SMTP_Service = None):
-		super().__init__(projector, wait_for_response = True, needs_printing = False)
+		super().__init__(projector, needs_printing = False)
 		if smtp_service:
 			self.smtp_service = smtp_service
 		self.code = 'update_loop_email'
 		self.projector = projector
-		self.update_index = 0
 		self.update_interval = update_interval
 		self.last_update_start_time = None
 		self.elapsed_time_since_last_update = 0
@@ -27,14 +26,13 @@ class UpdateLoopEmail(RecurrentAction):
 			self.projector.update() # Update projector attributes
 
 			subject = 'PJ{} \'{}\' UPDATE #{} at {} on {}'.format(self.projector.last_IP_digits, self.projector.name, self.update_index, time.strftime('%X'), time.strftime('%x'))
-			message = 'PJ{} {} update at {} on {}:\n'.format(self.projector.last_IP_digits, self.projector.family, time.strftime('%X'), time.strftime('%x'))
+			message = 'PJ{} {} update at {} on {}:\n'.format(self.projector.last_IP_digits, time.strftime('%X'), time.strftime('%x'))
 			message += '\n'
 
 			# Gather configuration info
 			message += '# Configuration\n'
-			configuration = self.projector.get_configuration_group()
-			for conf in configuration:
-				message += '\t{}: {}\n'.format(conf, configuration[conf])
+			for conf in self.projector.status.configuration_group:
+				message += '\t{}: {}\n'.format(conf, self.projector.status.configuration_group[conf])
 			message += '\n'
 
 			# Gather system info
@@ -42,8 +40,6 @@ class UpdateLoopEmail(RecurrentAction):
 			for s in self.projector.status.system_group:
 				message += '\t{}: {}\n'.format(s, self.projector.status.system_group[s])
 			message += '\n'
-
-			# Gather signal info
 
 			# Gather lamp info
 			message += '# Lamps\n'

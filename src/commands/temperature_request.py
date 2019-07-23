@@ -3,7 +3,7 @@ from projectors.christie_projector import ChristieProjector
 
 class TemperatureRequest(OneTimeAction):
 	def __init__(self, projector: ChristieProjector):
-		super().__init__(projector, wait_for_response = True, needs_printing = True)
+		super().__init__(projector, needs_printing = True)
 		self.code = 'temp'
 
 	def exec(self):

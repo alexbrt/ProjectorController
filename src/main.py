@@ -7,6 +7,11 @@ from actions.action_manager import ActionManager
 from commands.temperature_request import TemperatureRequest
 from commands.configuration_request import ConfigurationRequest
 from commands.system_request import SystemRequest
+from commands.version_request import VersionRequest
+from commands.signal_request import SignalRequest
+from commands.cooling_request import CoolingRequest
+from commands.health_request import HealthRequest
+from commands.serial_request import SerialRequest
 from commands.lamp_request import LampRequest
 from commands.update_loop_email import UpdateLoopEmail
 from commands.command import Command
@@ -28,14 +33,13 @@ def main():
 			print()
 			name = input('Name of projector {}: '.format(i))
 			projector_names.append(name)
-			family = input('Family of projector {}: '.format(i))
 			IP = IP_class + input('IP of projector {}: {}'.format(i, IP_class))
 			if not default_port:
 				PORT = int(input('Port of projector {}: '.format(i)))
 			else:
 				PORT = default_port
 			# Init projector
-			projectors[name] = ChristieProjector(name, family, IP, PORT)
+			projectors[name] = ChristieProjector(name, IP, PORT)
 
 			if not projectors[name].connect():
 				del projectors[name]
@@ -49,7 +53,7 @@ def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-v', '--videoprojector', nargs = '*', help = 'videoprojector name / identifier')
 	parser.add_argument('-c', '--command', help = 'serial command to be sent to videoprojector')
-	parser.add_argument('-p', '--predefined', nargs = '*', help = 'predefined command, such as \'temp\', \'conf\', \'sys\', \'lamp\', or \'update_loop_email\'')
+	parser.add_argument('-p', '--predefined', nargs = '*', help = 'predefined command, such as \'temp\', \'conf\', \'sys\', \'lamp\', \'cool\', \'seri\', \'sign\', \'health\', \'vers\', or \'update_loop_email <seconds>\'')
 
 	# Init SMTP
 	smtp_credentials_1 = open('./smtp_credentials.txt', 'r').read().splitlines()
@@ -100,6 +104,16 @@ def main():
 						action = ConfigurationRequest(projectors[projector_name])
 					elif command_code == 'sys':
 						action = SystemRequest(projectors[projector_name])
+					elif command_code == 'vers':
+						action = VersionRequest(projectors[projector_name])
+					elif command_code == 'sign':
+						action = SignalRequest(projectors[projector_name])
+					elif command_code == 'cool':
+						action = CoolingRequest(projectors[projector_name])
+					elif command_code == 'health':
+						action = HealthRequest(projectors[projector_name])
+					elif command_code == 'serial':
+						action = SerialRequest(projectors[projector_name])
 					elif command_code == 'lamp':
 						action = LampRequest(projectors[projector_name])
 					elif command_code == 'update_loop_email':
@@ -107,7 +121,7 @@ def main():
 						action = UpdateLoopEmail(projectors[projector_name], update_interval, smtp_recipients_1, smtp_service_1)
 			elif args['command']:
 				is_request = '?' in args['command']
-				action = Command(projectors[projector_name], args['command'], is_request, is_request)
+				action = Command(projectors[projector_name], args['command'], is_request)
 
 			# Add action
 			if action != None:

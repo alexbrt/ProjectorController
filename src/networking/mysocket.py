@@ -23,38 +23,18 @@ class MySocket:
 				raise RuntimeError('Socket connection broken')
 			totalsent = totalsent + sent
 
-	def receive(self, timeout = 0.25):
-		# Make socket non blocking
-		self.sock.setblocking(0)
-
+	def receive(self, end):
 		# Total data partwise in an array
 		total_data = []
 		data = ''
 
-		# Beginning time
-		begin = time.time()
 		while True:
-			# If we got some data, then break after timeout
-			if total_data and time.time() - begin > timeout:
+			data = self.sock.recv(1024)
+			if end in data:
+				total_data.append(data[:data.find(end)])
 				break
+			total_data.append(data)
 
-			# If we got no data at all, wait a little longer, twice the timeout
-			elif time.time() - begin > timeout * 2:
-				break
-
-			# recv something
-			try:
-				data = self.sock.recv(4096)
-				if data:
-					total_data.append(data)
-					# Change the beginning time for measurement
-					begin = time.time()
-					continue
-				else:
-					time.sleep(0.1)
-			except:
-				pass
-		# Join all parts to make final string
 		return b''.join(total_data)
 
 	def __del__(self):

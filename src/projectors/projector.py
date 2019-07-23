@@ -11,20 +11,7 @@ class Projector:
 		self.socket = MySocket()
 
 	def connect(self):
-		try:
-			self.socket.connect(self.IP, self.PORT)
-		except:
-			print('ERROR: Could not connect to projector \'{}\''.format(self.name))
-			return False
-		return True
+		pass
 
-	def send_command(self, cmd : str, wait_for_response : bool = False):
-		self.socket.send(cmd.encode())
-		if wait_for_response:
-			response = self.socket.receive().decode()
-			if response:
-				return response
-		return None
-	
-	def update(self):
-		return None
+	def send_command(self, cmd : str):
+		pass

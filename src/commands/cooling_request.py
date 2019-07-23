@@ -1,15 +1,15 @@
 from actions.one_time_action import OneTimeAction
 from projectors.christie_projector import ChristieProjector
 
-class ConfigurationRequest(OneTimeAction):
+class CoolingRequest(OneTimeAction):
 	def __init__(self, projector: ChristieProjector):
 		super().__init__(projector, needs_printing = True)
-		self.code = 'conf'
+		self.code = 'cool'
 
 	def exec(self):
-		self.response = self.projector.request_configuration_group()
+		self.response = self.projector.request_cooling_group()
 		return self.response
 
 	def print_response(self):
-		for conf_info in self.response:
-			print('\t\t/ {}: {}'.format(conf_info, self.response[conf_info]))
+		for cool_info in self.response:
+			print('\t\t/ {}: {}'.format(cool_info, self.response[cool_info]))
