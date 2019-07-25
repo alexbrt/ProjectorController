@@ -26,6 +26,7 @@ class UpdateLoopEmail(RecurrentAction):
 			self.smtp_service = smtp_service
 		self.code = 'update_loop_email'
 		self.projector = projector
+		self.update_index = 0
 		self.update_interval = update_interval
 		self.last_update_start_time = None
 		self.elapsed_time_since_last_update = 0
