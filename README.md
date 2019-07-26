@@ -2,29 +2,6 @@
 
 ProjectorController is a CLI written in Python which eases communication with Christie Digital® projectors supporting TCP/IP serial commands.
 
-## Installation
-
-### Prerequisites
-
-- Python 3
-
-### Clone
-
-- Clone this repo to your local machine using `https://github.com/alexbrt/ProjectorController`
-
-### Setup
-
-ProjectorController was coded to support email status reporting. Unless a valid `./src/smtp_credentials.txt` file is created, the software will most likely crash - this should be fixed in a future version.
-
-> ./src/smtp_credentials.txt syntax
-
-```
-user = <email>
-password = <password>
-recipients = <email_1>, <email_2>, ...
-```
-**Note:** Until this gets fixed, if you want to run the program without email status reporting, you can simply delete the code from `./src/main.py` which parses the `.txt` file. However, executing the `update_loop_email` command will still result in a crash.
-
 ## Usage
 
 **Note:** This software can currently only be used as a standalone tool - API is coming soon.
