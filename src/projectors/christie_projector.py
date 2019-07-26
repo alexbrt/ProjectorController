@@ -16,12 +16,15 @@
 import re
 
 from networking.mysocket import MySocket
-from projectors.projector import Projector
 from projectors.christie_projector_status import ChristieProjectorStatus
 
-class ChristieProjector(Projector):
+class ChristieProjector:
 	def __init__(self, name : str, IP : str, PORT : str):
-		super().__init__(name, IP, PORT)
+		self.name = name
+		self.IP = IP
+		self.last_IP_digits = IP.split('.')[-1]
+		self.PORT = PORT
+		self.socket = MySocket()
 		self.status = ChristieProjectorStatus()
 
 	def connect(self):
