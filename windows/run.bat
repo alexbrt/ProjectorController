@@ -14,4 +14,5 @@ if %commitsaway% neq 0 (
 	echo ####################
 	echo.
 )
-python ./src/main.py
+cd ./src
+python ./main.py
