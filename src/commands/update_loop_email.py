@@ -42,7 +42,7 @@ class UpdateLoopEmail(RecurrentAction):
 			self.projector.update() # Update projector attributes
 
 			subject = 'PJ{} \'{}\' UPDATE #{} at {} on {}'.format(self.projector.last_IP_digits, self.projector.name, self.update_index, time.strftime('%X'), time.strftime('%x'))
-			message = 'PJ{} {} update at {} on {}:\n'.format(self.projector.last_IP_digits, time.strftime('%X'), time.strftime('%x'))
+			message = 'PJ{} update at {} on {}:\n'.format(self.projector.last_IP_digits, time.strftime('%X'), time.strftime('%x'))
 			message += '\n'
 
 			# Gather configuration info

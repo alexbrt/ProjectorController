@@ -12,5 +12,4 @@ if [[ "$(git rev-list HEAD...origin/master --count)" -ne "0" ]]; then
 	git reset --hard FETCH_HEAD
 	printf '####################\n\n'
 fi
-cd ./src
-python3 ./main.py
+python3 ./src/main.py

@@ -32,16 +32,32 @@ from commands.update_loop_email import UpdateLoopEmail
 from commands.command import Command
 
 def main():
+	# Init SMTP
+	smtp_server = None
+	smtp_user = None
+	smtp_password = None
+	smtp_recipients = None
+	smtp_service = None
+	use_smtp = input('Use SMTP? (y/n): ')
+	if use_smtp == 'y':
+		smtp_server = input('\t / SMTP Server: ')
+		smtp_user = input('\t / User: ')
+		smtp_password = input('\t / Password: ')
+		smtp_recipients = [recipient.strip() for recipient in input('\t / Recipients: ').split(',')]
+		smtp_service = SMTP_Service(smtp_user, smtp_password, smtp_server)
+		print()
+
 	# Init projector details
-	projectors = {}
-	projector_names = []
-	IP_class = input("IP class (leave blank if different among projectors): ")
-	default_port = input("Default port (leave blank if different among projectors): ")
+	IP_class = input('IP class (leave blank if different among projectors): ')
+	default_port = input('Default port (leave blank if different among projectors): ')
 	print()
 	if IP_class:
 		IP_class += '.'
 	if default_port:
 		default_port = int(default_port)
+
+	projectors = {}
+	projector_names = []
 	while not projectors:
 		number_of_projectors = int(input('Number of projectors: '))
 		for i in range(1, number_of_projectors + 1):
@@ -69,13 +85,6 @@ def main():
 	parser.add_argument('-v', '--videoprojector', nargs = '*', help = 'videoprojector name / identifier')
 	parser.add_argument('-c', '--command', help = 'serial command to be sent to videoprojector')
 	parser.add_argument('-p', '--predefined', nargs = '*', help = 'predefined command, such as \'temp\', \'conf\', \'sys\', \'lamp\', \'cool\', \'seri\', \'sign\', \'health\', \'vers\', or \'update_loop_email <seconds>\'')
-
-	# Init SMTP
-	smtp_credentials_1 = open('./smtp_credentials.txt', 'r').read().splitlines()
-	smtp_user_1 = smtp_credentials_1[0][len('user = '):]
-	smtp_password_1 = smtp_credentials_1[1][len('password = '):]
-	smtp_recipients_1 = [recipient.strip() for recipient in smtp_credentials_1[2][len('recipients = '):].split(',')]
-	smtp_service_1 = SMTP_Service(smtp_user_1, smtp_password_1, 'smtp.gmail.com')
 
 	# Init background action manager
 	action_manager = ActionManager()
@@ -131,9 +140,9 @@ def main():
 						action = SerialRequest(projectors[projector_name])
 					elif command_code == 'lamp':
 						action = LampRequest(projectors[projector_name])
-					elif command_code == 'update_loop_email':
+					elif command_code == 'update_loop_email' and use_smtp:
 						update_interval = float(args['predefined'][1])
-						action = UpdateLoopEmail(projectors[projector_name], update_interval, smtp_recipients_1, smtp_service_1)
+						action = UpdateLoopEmail(projectors[projector_name], update_interval, smtp_recipients, smtp_service)
 			elif args['command']:
 				is_request = '?' in args['command']
 				action = Command(projectors[projector_name], args['command'], is_request)
