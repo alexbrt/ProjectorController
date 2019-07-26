@@ -38,7 +38,7 @@ def main():
 	smtp_password = None
 	smtp_recipients = None
 	smtp_service = None
-	use_smtp = input('Use SMTP? (y/n): ')
+	use_smtp = input('Use SMTP? (y/n) ')
 	if use_smtp == 'y':
 		smtp_server = input('\t / SMTP Server: ')
 		smtp_user = input('\t / User: ')
@@ -140,9 +140,19 @@ def main():
 						action = SerialRequest(projectors[projector_name])
 					elif command_code == 'lamp':
 						action = LampRequest(projectors[projector_name])
-					elif command_code == 'update_loop_email' and use_smtp:
-						update_interval = float(args['predefined'][1])
-						action = UpdateLoopEmail(projectors[projector_name], update_interval, smtp_recipients, smtp_service)
+					elif command_code == 'update_loop_email':
+						if use_smtp == 'n':
+							use_smtp = input('\n\t# SMTP was not enabled! Use SMTP? (y/n) ')
+							smtp_server = input('\t\t / SMTP Server: ')
+							smtp_user = input('\t\t / User: ')
+							smtp_password = input('\t\t / Password: ')
+							smtp_recipients = [recipient.strip() for recipient in input('\t\t / Recipients: ').split(',')]
+							smtp_service = SMTP_Service(smtp_user, smtp_password, smtp_server)
+							update_interval = float(args['predefined'][1])
+							action = UpdateLoopEmail(projectors[projector_name], update_interval, smtp_recipients, smtp_service)
+						else:
+							update_interval = float(args['predefined'][1])
+							action = UpdateLoopEmail(projectors[projector_name], update_interval, smtp_recipients, smtp_service)
 			elif args['command']:
 				is_request = '?' in args['command']
 				action = Command(projectors[projector_name], args['command'], is_request)
