@@ -1,6 +1,6 @@
 # ProjectorController
 
-ProjectorController is a CLI written in Python which eases communication with projectors supporting TCP/IP serial commands. Support for Christie Digital® projectors (Boxer/Crimson/Mirage Series, Christie D4KLH, Roadie 4K45) has already been added.
+ProjectorController is a CLI written in Python which eases communication with Christie Digital® projectors supporting TCP/IP serial commands.
 
 ## Installation
 
