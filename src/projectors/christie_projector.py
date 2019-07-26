@@ -50,39 +50,6 @@ class ChristieProjector(Projector):
 		# self.status.health_group = self.request_health_group()
 		# self.status.serial_group = self.request_serial_group()
 
-	# def get_status(self):
-	# 	if not self.status.configuration_group:
-	# 		self.update_configuration_group()
-	# 	elif not self.status.version_group:
-	# 		self.update_version_group()
-	# 	return self.status
-
-	# def update_configuration_group(self):
-	# 	conf_request_response = self.send_command('(SST+CONF?)')
-	# 	if conf_request_response:
-	# 		matches = re.findall(r'"([^"]*)"', conf_request_response)
-	# 		for i in range(int(len(matches) / 2)):
-	# 			if matches[i*2] and matches[i*2] != 'N/A':
-	# 				self.status.configuration_group[matches[i*2 + 1]] = matches[i*2]
-
-	# def get_configuration_group(self):
-	# 	if not self.status.configuration_group:
-	# 		self.update_configuration_group()
-	# 	return self.status.configuration_group
-
-	# def update_version_group(self):
-	# 	version_request_response = self.send_command('(SST+VERS?)')
-	# 	if version_request_response:
-	# 		matches = re.findall(r'"([^"]*)"', version_request_response)
-	# 		for i in range(int(len(matches) / 2)):
-	# 			if matches[i*2] and matches[i*2] != 'N/A':
-	# 				self.status.version_group[matches[i*2 + 1]] = matches[i*2]
-
-	# def get_version_group(self):
-	# 	if not self.status.version_group:
-	# 		self.update_version_group()
-	# 	return self.status.version_group
-
 	def request_configuration_group(self):
 		configuration_group = {}
 		conf_request_response = self.send_command('(SST+CONF?)')
