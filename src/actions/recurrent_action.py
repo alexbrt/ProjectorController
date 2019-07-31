@@ -17,6 +17,6 @@ from actions.action import Action
 from projectors.christie_projector import ChristieProjector
 
 class RecurrentAction(Action):
-	def __init__(self, projector, needs_printing: bool = False):
+	def __init__(self, projector, needs_printing = False):
 		super().__init__(projector, needs_printing)
 		self.type = 'recurrent'
