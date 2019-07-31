@@ -19,7 +19,7 @@ from actions.one_time_action import OneTimeAction
 from projectors.christie_projector import ChristieProjector
 
 class Command(OneTimeAction):
-	def __init__(self, projector: ChristieProjector, cmd: str, needs_printing: bool):
+	def __init__(self, projector, cmd, needs_printing):
 		super().__init__(projector, needs_printing)
 		self.projector = projector
 		self.cmd = cmd

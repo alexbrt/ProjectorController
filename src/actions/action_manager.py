@@ -25,13 +25,13 @@ class ActionManager:
 		self.background_thread.daemon = True
 		self.__exit_request = False
 
-	def add_action(self, action: Action):
+	def add_action(self, action):
 		self.actions.append(action)
 
-	def remove_action(self, action: Action):
+	def remove_action(self, action):
 		self.actions.remove(action)
 
-	def clear_reponse(self, action: Action):
+	def clear_reponse(self, action):
 		del self.responses[action]
 
 	def execution_loop(self):

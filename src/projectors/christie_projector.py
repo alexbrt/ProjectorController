@@ -19,7 +19,7 @@ from networking.mysocket import MySocket
 from projectors.christie_projector_status import ChristieProjectorStatus
 
 class ChristieProjector:
-	def __init__(self, name : str, IP : str, PORT : str):
+	def __init__(self, name, IP, PORT):
 		self.name = name
 		self.IP = IP
 		self.last_IP_digits = IP.split('.')[-1]
@@ -35,7 +35,7 @@ class ChristieProjector:
 			return False
 		return True
 
-	def send_command(self, cmd : str):
+	def send_command(self, cmd):
 		self.socket.send(('($' + cmd[1:]).encode())
 		response = self.socket.receive(b'$').decode()
 		return response

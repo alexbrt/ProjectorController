@@ -18,13 +18,13 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 class SMTP_Service:
-	def __init__(self, user : str, password : str, server : str):
+	def __init__(self, user, password, server):
 		# Init SMTP connection
 		self.user = user
 		self.password = password
 		self.server = server
 
-	def sendmail(self, sender : str, recipients : [str], subject : str, message : str):
+	def sendmail(self, sender, recipients, subject, message):
 		# Prepare email
 		mail = MIMEMultipart()
 		mail['From'] = sender

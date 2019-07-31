@@ -20,7 +20,7 @@ from projectors.christie_projector import ChristieProjector
 from actions.recurrent_action import RecurrentAction
 
 class UpdateLoopEmail(RecurrentAction):
-	def __init__(self, projector : ChristieProjector, update_interval, recipients, smtp_service : SMTP_Service = None):
+	def __init__(self, projector, update_interval, recipients, smtp_service = None):
 		super().__init__(projector, needs_printing = False)
 		if smtp_service:
 			self.smtp_service = smtp_service
